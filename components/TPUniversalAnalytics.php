@@ -2,6 +2,11 @@
 /**
  * Universal Analytics Component
  *
+ * Extended from the TagPlanet Universal Analytics Yii Component by
+ * @author Micha Wotton
+ * @link http://www.savvysme.com.au
+ * @copyright Additions and changes Copyright &copy; 2014 Micha Wotton
+ * 
  * @author Philip Lawrence <philip@misterphilip.com>
  * @link http://misterphilip.com
  * @link http://tagpla.net
@@ -66,6 +71,12 @@ class TPUniversalAnalytics extends CApplicationComponent
     protected $_calledData = array();
     
     /**
+    * Session Variable name to store data
+    * @protected
+    */
+    protected $_sessionVar;
+    
+    /**
      * Have we rendered already?
      * @protected
      */
@@ -78,6 +89,7 @@ class TPUniversalAnalytics extends CApplicationComponent
     public function render( )
     {
         $js = '';
+        $this->_calledData = Yii::app()->user->getState($this->_sessionVar,array());
         if(!$this->_hasRendered)
         {
             if($this->property == '')
@@ -178,6 +190,7 @@ EOT;
      */
     public function __call($method, $args)
     {
+        $this->_calledData = Yii::app()->user->getState($this->_sessionVar,array());
         switch($method)
         {
             // Stupid ecommerce plugin, messing things up
@@ -192,6 +205,7 @@ EOT;
                     'type' => $method,
                     'data' => $args,
                 );
+                Yii::app()->user->setState($this->_sessionVar,$this->_calledData);
                 return true;
             break;
             default:

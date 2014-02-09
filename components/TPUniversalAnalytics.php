@@ -99,7 +99,7 @@ class TPUniversalAnalytics extends CApplicationComponent
             }
             
             // Check to see if we need to throw in the trackPageview call
-            if($this->autoPageview && !in_array('_trackPageview', $this->_calledData))
+            if($this->autoPageview && !in_array(array('type' => 'send','data' => 'pageview'), $this->_calledData))
             {
                 $this->send('pageview');
             }
@@ -170,6 +170,7 @@ EOT;
         // Clear our the current data, so we can continue to render new items
         // .. and not repeat ourselves!
         $this->_calledData = array();
+        Yii::app()->user->setState($this->_sessionVar,$this->_calledData);
         
         if($this->autoRender)
         {

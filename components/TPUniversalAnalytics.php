@@ -14,6 +14,10 @@
  * @copyright Copyright &copy; 2013 Philip Lawrence
  * @license http://tagpla.net/licenses/MIT.txt
  * @version 1.1.0
+ * 
+ * Implementation of Google Analytics Universal Analytics.
+ * Refer to the Google docs for information on supported methods
+ * @link https://developers.google.com/analytics/devguides/collection/analyticsjs/method-reference
  */
 class TPUniversalAnalytics extends CApplicationComponent
 {
@@ -83,7 +87,7 @@ class TPUniversalAnalytics extends CApplicationComponent
     protected $_hasRendered = false;
     
     /**
-     * Render JS
+     * Render JS snippet and any stored calls.
      * @return mixed
      */
     public function render( )
@@ -188,6 +192,8 @@ EOT;
      * @param string $method
      * @param mixed $args
      * @return bool
+     * 
+     * Args are handled according to type. If GUA requires a JSON argument, use a PHP array or object
      */
     public function __call($method, $args)
     {

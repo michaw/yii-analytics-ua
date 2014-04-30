@@ -46,6 +46,12 @@ class TPUniversalAnalytics extends CApplicationComponent
     public $autoPageview = true;
     
     /**
+    * Add support for Display ads and demographics/interest data
+    * @var bool
+    */
+    public $displayFeatures = false;
+    
+    /**
      * Allowable Settings
      * @protected
      */
@@ -130,7 +136,11 @@ EOT;
             {
                 $js.= "ga('create', '{$this->property}');" . PHP_EOL;
             }
-        
+            
+            if ($this->displayFeatures){
+                // Require displayfeatures data for demographics and interest
+                $js.= "ga('require', 'displayfeatures');" . PHP_EOL;
+            }
             // Append a period if we have an identifier (name)
             $this->name = ($this->name) ? $this->name . '.' : '';
         
